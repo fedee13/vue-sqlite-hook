@@ -131,7 +131,7 @@ export interface SQLiteHook extends  AvailableResult {
     copyFromAssets(overwrite?: boolean): Promise<void>;
     /**
      * Get databases from HTTP request
-     * @param url 
+     * @param url
      * @param overwrite
      * @since 3.0.3
      */
@@ -201,7 +201,7 @@ export interface SQLiteHook extends  AvailableResult {
      * @since 2.1.2
      */
     getMigratableDbList(folderPath?: string): Promise<capSQLiteValues>
- 
+
     /**
      * Add SQLIte Suffix to existing Cordova databases
      * @param folderPath
@@ -231,37 +231,37 @@ export interface SQLiteHook extends  AvailableResult {
      * @returns Promise<Result>
      * @since 2.0.2
      */
-    isSecretStored(): Promise<Result>; 
+    isSecretStored(): Promise<Result>;
     /**
      * Set an encrypted secret to secure storage
      * To run only once
      * Will migrate from GlobalSQLite secret when required
-     * @param passphrase 
+     * @param passphrase
      * @returns Promise<void>
      * @since 2.0.2
      */
-     setEncryptionSecret(passphrase: string): Promise<void>;   
+     setEncryptionSecret(passphrase: string): Promise<void>;
     /**
      * Change encrypted secret from secure storage
      * Not to use to migrate from GlobalSQLite secret (run setEncryptionSecret)
-     * @param passphrase 
-     * @param oldpassphrase 
+     * @param passphrase
+     * @param oldpassphrase
      * @returns Promise<void>
      * @since 2.0.2
      */
-    changeEncryptionSecret(passphrase: string, oldpassphrase: string): Promise<void>; 
+    changeEncryptionSecret(passphrase: string, oldpassphrase: string): Promise<void>;
     /**
      * Clear the encrypted secret from secure storage
      * @returns Promise<void>
      * @since 3.0.0
-     */ 
-     clearEncryptionSecret(): Promise<void>;   
+     */
+     clearEncryptionSecret(): Promise<void>;
      /**
      * Remove Json Listeners
      * @since 2.0.1
      */
     removeListeners(): Promise<void>;
- 
+
 }
 
 export interface MySet {
@@ -291,8 +291,8 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     // add listeners
     let importListener: any = null;
     let exportListener: any = null;
-    if(platform != "electron") { 
-        if( onProgress ) { 
+    if(platform != "electron") {
+        if( onProgress ) {
             if(onProgress.onProgressImport && sqlitePlugin) importListener =
                 sqlitePlugin.addListener('sqliteImportProgressEvent',
                 (e: any) => {
@@ -315,7 +315,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
      * Initialize the Web Store
      */
     const initWebStore = async (): Promise<void> => {
-        if(platform != "web") { 
+        if(platform != "web") {
             return Promise.reject(`Not implemented on platform ${platform}`);
         }
 
@@ -331,7 +331,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
      * @param dbName string
      */
     const saveToStore = async (dbName: string): Promise<void> => {
-        if(platform != "web") { 
+        if(platform != "web") {
             return Promise.reject(`Not implemented on platform ${platform}`);
         }
         if(dbName.length > 0) {
@@ -344,19 +344,19 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
         } else {
             return Promise.reject('Must provide a database name');
         }
-    };    
+    };
     /**
      * Remove Json Listeners
      */
     const removeListeners = async (): Promise<void> => {
-        if(platform != "electron") {   
+        if(platform != "electron") {
             importListener.remove();
             exportListener.remove();
         }
     };
     /**
      * Echo value
-     * @param value 
+     * @param value
      */
     const echo = async (value: string): Promise<capEchoResult> => {
         const ret: capEchoResult = {value: ""};
@@ -365,7 +365,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
             if(r) {
                 return r;
             }
-            return ret;    
+            return ret;
         } else {
             ret.value = "Echo: failed";
             return ret;
@@ -386,18 +386,18 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     /**
      * Create a Connection to Database
      * @param dbName string
-     * @param encrypted boolean optional 
+     * @param encrypted boolean optional
      * @param mode string optional
      * @param version number optional
      * @param readonly boolean optional since 3.0.2
-     */  
+     */
     const createConnection = async (dbName: string, encrypted?: boolean,
                                     mode?: string, version?: number,
                                     readonly?: boolean):
                                     Promise<SQLiteDBConnection> => {
         if (dbName == null || dbName.length === 0) {
             return Promise.reject(new Error('Must provide a database name'));
-        } 
+        }
         const mDatabase: string = dbName;
         const mVersion: number = version ? version : 1;
         const mEncrypted: boolean = encrypted ? encrypted : false;
@@ -411,7 +411,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                     return Promise.resolve(r);
                 } else {
                     return Promise.reject("No returned connection");
-                } 
+                }
         } catch (err) {
             return Promise.reject(err);
         }
@@ -453,12 +453,12 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 }
             } catch (err) {
                 return Promise.reject(err);
-            } 
+            }
         } else {
             return Promise.reject('Must provide a database name');
         }
     };
-        
+
     /**
      * Retrieve a Connection to the Database
      * @param dbName string
@@ -477,14 +477,14 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 }
             } catch (err) {
                 return Promise.reject(err);
-            }        
+            }
         } else {
             return Promise.reject('Must provide a database name');
-        }        
+        }
     };
     /**
      * Retrieve all Connections to Databases
-     * 
+     *
      */
     const retrieveAllConnections = async (): Promise<Map<string, SQLiteDBConnection>> => {
         try {
@@ -511,7 +511,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     };
 
     /**
-     * Import from Json 
+     * Import from Json
      * @param jsonstring string
      */
     const importFromJson = async (jsonstring: string): Promise<capSQLiteChanges> => {
@@ -521,7 +521,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 return Promise.resolve(r);
             } else {
                 return Promise.reject('Error in importFromJson');
-            } 
+            }
         } catch (err) {
             return Promise.reject(err);
         }
@@ -537,17 +537,17 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 return Promise.resolve(r);
             } else {
                 return Promise.reject('Error Json Object not valid');
-            } 
+            }
         } catch (err) {
             return Promise.reject(err);
         }
     };
     /**
      * Add the upgrade Statement for database version upgrading
-     * @param dbName string 
+     * @param dbName string
      * @param upgrade VersionUpgrade
      */
-    const addUpgradeStatement = async (dbName:string, upgrade: VersionUpgrade): 
+    const addUpgradeStatement = async (dbName:string, upgrade: VersionUpgrade):
                                                       Promise<void> => {
 
         if(upgrade === null) {
@@ -563,7 +563,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
         if(dbName.length > 0) {
             try {
                 await mSQLite
-                .addUpgradeStatement(dbName, upgrade.toVersion, upgrade.statements);
+                .addUpgradeStatement(dbName, [upgrade]);
                 return Promise.resolve();
             } catch (err) {
                 return Promise.reject(err);
@@ -574,8 +574,8 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     };
     /**
      * Copy databases from assets folder
-     * @param overwrite 
-     * @returns 
+     * @param overwrite
+     * @returns
      */
     const copyFromAssets = async (overwrite?: boolean) : Promise<void> => {
         const mOverwrite = overwrite!= null ? overwrite : true;
@@ -589,8 +589,8 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     /**
      * Get databases from HTTP request
      * @param url
-     * @param overwrite 
-     * @returns 
+     * @param overwrite
+     * @returns
      */
      const getFromHTTPRequest = async (url: string, overwrite?: boolean) : Promise<void> => {
         const mOverwrite = overwrite!= null ? overwrite : true;
@@ -640,7 +640,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     /**
      * Get the migratable cordova database list
      * @param folderPath
-     * 
+     *
      */
     const getMigratableDbList = async (folderPath?: string): Promise<capSQLiteValues> => {
         const path: string = folderPath ? folderPath : "default"
@@ -657,7 +657,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     };
     /**
      * Add SQLite suffix to cordova databases
-     * @param folderPath 
+     * @param folderPath
      * @param dbNameList
      */
     const addSQLiteSuffix = async (folderPath?: string, dbNameList?: string[]): Promise<void> => {
@@ -672,7 +672,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     };
     /**
      * Delete Cordova databases
-     * @param folderPath 
+     * @param folderPath
      * @param dbNameList
      */
     const deleteOldDatabases = async (folderPath?: string, dbNameList?: string[]): Promise<void> => {
@@ -697,7 +697,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 return Promise.resolve(r);
             } else {
                 return Promise.reject('Error in checkConnectionsConsistency');
-            } 
+            }
         } catch (err) {
             return Promise.reject(err);
         }
@@ -714,7 +714,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 return Promise.resolve(r);
             } else {
                 return Promise.reject('Error in isSecretStored');
-            } 
+            }
         } catch (err) {
             return Promise.reject(err);
         }
@@ -723,14 +723,14 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
      * Set an encrypted secret to secure storage
      * To run only once
      * Will migrate from GlobalSQLite secret when required
-     * @param passphrase 
+     * @param passphrase
      * @returns Promise<void>
      * @since 2.0.2
      */
     const setEncryptionSecret = async (passphrase: string): Promise<void> => {
         if (passphrase == null || passphrase.length === 0) {
             return Promise.reject(new Error('Must provide a passphrase'));
-        } 
+        }
         try {
             await mSQLite.setEncryptionSecret(passphrase);
             return Promise.resolve();
@@ -741,8 +741,8 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     /**
      * Change encrypted secret from secure storage
      * Not to use to migrate from GlobalSQLite secret (run setEncryptionSecret)
-     * @param passphrase 
-     * @param oldpassphrase 
+     * @param passphrase
+     * @param oldpassphrase
      * @returns Promise<void>
      * @since 2.0.2
      */
@@ -750,10 +750,10 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
         oldpassphrase: string): Promise<void> => {
         if (passphrase == null || passphrase.length === 0) {
             return Promise.reject(new Error('Must provide a passphrase'));
-        } 
+        }
         if (oldpassphrase == null || oldpassphrase.length === 0) {
             return Promise.reject(new Error('Must provide the old passphrase'));
-        } 
+        }
         try {
             await mSQLite.changeEncryptionSecret(passphrase, oldpassphrase);
             return Promise.resolve();
@@ -765,7 +765,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
      * Clear the encrypted secret from secure storage
      * @returns Promise<void>
      * @since 3.0.0
-     */ 
+     */
     const clearEncryptionSecret = async (): Promise<void> => {
         try {
             await mSQLite.clearEncryptionSecret();
@@ -773,7 +773,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
         } catch(err) {
             return Promise.reject(err);
         }
-    };   
+    };
 
     /**
      * Get a Non-Conformed database path
@@ -785,10 +785,10 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
     const getNCDatabasePath = async (folderPath: string, database: string): Promise<capNCDatabasePathResult> => {
         if (folderPath == null || folderPath.length === 0) {
             return Promise.reject(new Error('Must provide a folder path'));
-        } 
+        }
         if (database == null || database.length === 0) {
             return Promise.reject(new Error('Must provide a database name'));
-        } 
+        }
         const mFolderPath: string = folderPath;
         const mDatabase: string = database;
         try {
@@ -798,21 +798,21 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 return Promise.resolve(r);
             } else {
                 return Promise.reject("No returned database path");
-            } 
+            }
         } catch (err) {
             return Promise.reject(err);
         }
     };
     /**
-     * Create a Non-Conformed Database Connection 
+     * Create a Non-Conformed Database Connection
      * @param databasePath string
      * @param version number optional
-     */  
+     */
     const createNCConnection = async (databasePath: string, version?: number)
                                 : Promise<SQLiteDBConnection> => {
         if (databasePath == null || databasePath.length === 0) {
             return Promise.reject(new Error('Must provide a database path'));
-        } 
+        }
         const mDatabasePath: string = databasePath;
         const mVersion: number = version ? version : 1;
         try {
@@ -822,13 +822,13 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 return Promise.resolve(r);
             } else {
                 return Promise.reject("No returned NC connection");
-            } 
+            }
         } catch (err) {
             return Promise.reject(err);
         }
     };
     /**
-     * Retrieve a Non-Conformed Database Connection 
+     * Retrieve a Non-Conformed Database Connection
      * @param databasePath string
      */
     const retrieveNCConnection = async (databasePath: string): Promise<SQLiteDBConnection> => {
@@ -842,14 +842,14 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 }
             } catch (err) {
                 return Promise.reject(err);
-            }        
+            }
         } else {
             return Promise.reject('Must provide a database path');
-        }        
+        }
     };
 
     /**
-     * Close a Non-Conformed Database Connection 
+     * Close a Non-Conformed Database Connection
      * @param databasePath string
      */
     const closeNCConnection = async (databasePath: string): Promise<void> => {
@@ -879,7 +879,7 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
                 }
             } catch (err) {
                 return Promise.reject(err);
-            } 
+            }
         } else {
             return Promise.reject('Must provide a database path');
         }
@@ -941,8 +941,8 @@ export function useSQLite(onProgress? : SQLiteProps): SQLiteHook {
             removeListeners: featureNotAvailableError,
             isSecretStored: featureNotAvailableError,
             setEncryptionSecret: featureNotAvailableError,
-            changeEncryptionSecret: featureNotAvailableError,             
-            clearEncryptionSecret: featureNotAvailableError,             
+            changeEncryptionSecret: featureNotAvailableError,
+            clearEncryptionSecret: featureNotAvailableError,
             ...notAvailable
         };
     } else {
