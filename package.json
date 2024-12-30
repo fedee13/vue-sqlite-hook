@@ -17,7 +17,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run transpile && npm run copy-package",
-    "copy-package": "cp ./package.json ./dist/package.json",
+    "copy-package": "cpy \"./package.json\" \"./dist\"",
     "package": "npm pack ./dist",
     "deploy": "npm run build && npm test && npx np --tag=next",
     "rollup": "rollup --config rollup.config.js",
@@ -42,6 +42,7 @@
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
     "@vue/compiler-sfc": "^3.2.47",
+    "cpy-cli": "^5.0.0",
     "eslint": "^8.10.0",
     "eslint-plugin-vue": "^8.5.0",
     "jest": "^27.5.1",
