@@ -1,6 +1,6 @@
 {
   "name": "vue-sqlite-hook",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Vue Hook for @capacitor-community/sqlite",
   "repository": {
     "type": "git",
@@ -25,7 +25,8 @@
     "clean": "rimraf dist",
     "build-old": "node scripts/build.js",
     "docgen": "docgen --api SQLiteHook --output-readme docs/APIHook.md",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "@capacitor/core": ">=6.0.0",
